@@ -60,7 +60,7 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
                 stage('Build Docker Image') {
                         container('docker') {
                                 sh "docker build -t ${image_tag} -f ./docker/Dockerfile ."
-                                sh "docker login -u AWS -p '${ecr_cred}' ${ecr_url}"
+                                sh "docker login -u AWS -p ${ecr_cred} ${ecr_url}"
                                 sh "docker push ${image_tag}"
                         }
                 }
