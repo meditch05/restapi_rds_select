@@ -52,10 +52,8 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
                 stage('ECR Login') {
                         container('awscli') {
 							sh "aws ecr get-login-password --region ap-northeast-2"
-							ecr_cred = $(aws ecr get-login-password --region ap-northeast-2)
-							T = sh(script: 'aws ecr get-login-password --region ap-northeast-2', returnStdout: true)
+							ecr_cred = sh(script: 'aws ecr get-login-password --region ap-northeast-2', returnStdout: true)
 							sh " echo ${ecr_cred}"
-							sh " echo ${T}"
                         }
                 }
 
