@@ -36,7 +36,8 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
 		stage('CheckOut Source') { // gitLab API Plugin, gitLab Plugin
 			git branch: "master", url: "${git_url}", credentialsId: env.GIT_CREDENTIAL
 		}
-			stage('Build Maven') {  // Maven Integration:3.3
+		
+		stage('Build Maven') {  // Maven Integration:3.3
 			container('maven') {
 				sh "mvn -f ./pom.xml -B -DskipTests package" // clean package
 				// sh "pwd"
@@ -44,12 +45,14 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
 				sh "cp ./target/app-1.0.jar ."
 			}
 		}
-			stage('Build Docker Image') {
+		
+		stage('Build Docker Image') {
 			container('docker') {
 				sh "docker build -t ${image_tag} -f ./docker/Dockerfile ."
 			}
 		}
-			stage('Push Docker Image') {
+		
+		stage('Push Docker Image') {
 			container('docker') {
 				sh "docker push ${image_tag}"
 			}
@@ -65,5 +68,5 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
 				sh "kubectl apply -f ./kubernetes/ingress.yaml"  // ingress.yaml 은 초기 테스트시에 구성해야함 ( 그래야지 ㅡ_ㅡ )
 			}
 		}
-		}
+	}
 }
