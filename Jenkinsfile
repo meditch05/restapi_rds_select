@@ -52,7 +52,7 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
                 stage('ECR Login') {
                         container('awscli') {
 							sh "aws ecr get-login-password --region ap-northeast-2"
-							ecr_cred = sh(script: 'aws ecr get-login-password --region ap-northeast-2', returnStdout: true)
+							ecr_cred = sh(script: 'aws ecr get-login-password --region ap-northeast-2', returnStdout: false)
 							sh "echo ${ecr_cred}"
                         }
                 }
@@ -60,9 +60,7 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
                 stage('Build Docker Image') {
                         container('docker') {
                             sh "docker build -t ${image_tag} -f ./docker/Dockerfile ."
-                            // sh "docker login -u AWS -p '${ecr_cred}' ${ecr_url}"
-                            sh "docker login -u AWS -p sh(script: 'aws ecr get-login-password --region ap-northeast-2', returnStdout: false) ${ecr_url}"
-                            
+                            sh "docker login -u AWS -p '${ecr_cred}' ${ecr_url}"                            
                             sh "docker push ${image_tag}"
                         }
                 }
