@@ -52,26 +52,29 @@ podTemplate(label: label, cloud: 'kubernetes', serviceAccount: 'jenkins', // nod
                 stage('ECR Login') {
                         container('awscli') {
 							sh "aws ecr get-login-password --region ap-northeast-2"
-                            ecr_cred = $(aws ecr get-login-password --region ap-northeast-2)
+							ecr_cred = $(aws ecr get-login-password --region ap-northeast-2)
+							T = sh(script: 'aws ecr get-login-password --region ap-northeast-2', returnStdout: true)
+							sh " echo ${ecr_cred}"
+							sh " echo ${T}"
                         }
                 }
 
                 stage('Build Docker Image') {
                         container('docker') {
-								sh "echo ${ecr_cred}"
-                                sh "docker build -t ${image_tag} -f ./docker/Dockerfile ."
-                                sh "docker login -u AWS -p ${ecr_cred} ${ecr_url}"
-                                sh "docker push ${image_tag}"
+							sh "echo ${ecr_cred}"
+                            sh "docker build -t ${image_tag} -f ./docker/Dockerfile ."
+                            sh "docker login -u AWS -p ${ecr_cred} ${ecr_url}"
+                            sh "docker push ${image_tag}"
                         }
                 }
 
                 stage('k8s Update Deployment Image = ${image_tag}') {
                         container('kubectl') {
-                                // sh "kubectl delete -f ./kubernetes/deployment.yaml"
-                                sh "kubectl apply -f  ./kubernetes/deployment.yaml"
-                                sh "kubectl get deploy,pod -n ${namespace} -l app=${app}"
-                                sh "kubectl apply -f ./kubernetes/service.yaml"  // service.yaml 은 초기 테스트시에 구성해야함 ( 그래야지 ㅡ_ㅡ )
-                                sh "kubectl apply -f ./kubernetes/ingress.yaml"  // ingress.yaml 은 초기 테스트시에 구성해야함 ( 그래야지 ㅡ_ㅡ )
+                            // sh "kubectl delete -f ./kubernetes/deployment.yaml"
+                            sh "kubectl apply -f  ./kubernetes/deployment.yaml"
+                            sh "kubectl get deploy,pod -n ${namespace} -l app=${app}"
+                            sh "kubectl apply -f ./kubernetes/service.yaml"  // service.yaml 은 초기 테스트시에 구성해야함 ( 그래야지 ㅡ_ㅡ )
+                            sh "kubectl apply -f ./kubernetes/ingress.yaml"  // ingress.yaml 은 초기 테스트시에 구성해야함 ( 그래야지 ㅡ_ㅡ )
                         }
                 }
         }
