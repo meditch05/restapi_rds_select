@@ -5,7 +5,7 @@
 //===============================================================================================
 
 def git_url       = "https://github.com/meditch05/restapi_rds_select.git"
-def docker_repo   = "myregistry.mwportal.com:30001/mwportal/swing_tps_res"
+def docker_repo   = "847322629192.dkr.ecr.ap-northeast-2.amazonaws.com/restapi"
 def docker_ver    = "1.0"
 def namespace     = "test"
 def app           = "restapi_rds_select"
