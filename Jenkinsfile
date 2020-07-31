@@ -10,6 +10,7 @@ def ecr_repo      = "restapi"
 def docker_ver    = "1.0"
 def namespace     = "test"
 def app           = "restapi_rds_select"
+def ecr_cred      = "not_yet"
 
 def image_tag     = "${ecr_url}/${ecr_repo}:${docker_ver}"
 def label         = "jenkins-slave-jnlp-${UUID.randomUUID().toString()}"
