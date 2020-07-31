@@ -11,7 +11,7 @@ metadata:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   rules:
-  - host: rds.tbiz-atcl.net
+  - host: api.tbiz-atcl.net
     http:
       paths:
       - path: /
