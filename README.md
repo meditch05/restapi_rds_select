@@ -4,4 +4,4 @@
 curl http://api.tbiz-atcl.net/get/salary/10051
 
 - 2020.08.02 
-Github ( Push ) ==> Jenkins Build       
+Github ( Push ) ==> Jenkins Build        
